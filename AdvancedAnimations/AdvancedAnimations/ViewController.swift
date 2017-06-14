@@ -21,6 +21,9 @@ class ViewController: UIViewController {
     
     // UI
     @IBOutlet weak var headerView: UIView!
+    @IBOutlet weak var commentHeaderView: UIView!
+    @IBOutlet weak var backButton: UIButton!
+    @IBOutlet weak var closeButton: UIButton!
     @IBOutlet weak var blurEffectView: UIVisualEffectView!
     var commentView = UIView()
     var commentTitleLabel = UILabel()
@@ -127,6 +130,11 @@ class ViewController: UIViewController {
         }
     }
     
+    @IBAction func didTapCloseButton(_ sender: UIButton) {
+        if self.state == .expanded {
+            self.animateOrReverseRunningTransition(state: self.nextState(), duration: animatorDuration)
+        }
+    }
     // MARK: Animation
     // Frame Animation
     private func addFrameAnimator(state: State, duration: TimeInterval) {
@@ -193,7 +201,7 @@ class ViewController: UIViewController {
     }
     
     // CornerRadius Animation
-    private func addCornerRadiusAnimtior(state: State, duration: TimeInterval) {
+    private func addCornerRadiusAnimator(state: State, duration: TimeInterval) {
         commentView.clipsToBounds = true
         // Corner mask
         if #available(iOS 11, *) {
@@ -211,13 +219,38 @@ class ViewController: UIViewController {
         runningAnimators.append(cornerRadiusAnimator)
     }
     
+    // KeyFrame Animation
+    private func addKeyFrameAnimator(state: State, duration: TimeInterval) {
+        let keyFrameAnimator = UIViewPropertyAnimator(duration: duration, curve: .linear) {
+            UIView.animateKeyframes(withDuration: 0, delay: 0, options: [], animations: {
+                switch state {
+                case .expanded:
+                    UIView.addKeyframe(withRelativeStartTime: duration / 2, relativeDuration: duration / 2, animations: {
+                        self.commentHeaderView.alpha = 1
+                        self.backButton.transform = CGAffineTransform(rotationAngle: CGFloat(-Double.pi / 2))
+                        self.closeButton.transform = CGAffineTransform(rotationAngle: CGFloat(-Double.pi / 2))
+                    })
+                case .collapsed:
+                    UIView.addKeyframe(withRelativeStartTime: 0, relativeDuration: duration / 2, animations: {
+                        self.commentHeaderView.alpha = 0
+                        self.backButton.transform = CGAffineTransform.identity
+                        self.closeButton.transform = CGAffineTransform.identity
+                    })
+                }
+            }, completion: nil)
+        }
+        keyFrameAnimator.pauseAnimation()
+        runningAnimators.append(keyFrameAnimator)
+    }
+    
     // Perform all animations with animators if not already running
     func animateTransitionIfNeeded(state: State, duration: TimeInterval) {
         if runningAnimators.isEmpty {
             self.addFrameAnimator(state: state, duration: duration)
             self.addBlurAnimator(state: state, duration: duration)
             self.addLabelScaleAnimator(state: state, duration: duration)
-            self.addCornerRadiusAnimtior(state: state, duration: duration)
+            self.addCornerRadiusAnimator(state: state, duration: duration)
+            self.addKeyFrameAnimator(state: state, duration: duration)
         }
     }
     

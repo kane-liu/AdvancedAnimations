@@ -33,12 +33,22 @@
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
+                                    <button opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ofh-SV-ipU" userLabel="Back Button">
+                                        <rect key="frame" x="0.0" y="18" width="44" height="44"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="44" id="2r5-B0-jJy"/>
+                                            <constraint firstAttribute="height" constant="44" id="ebQ-mO-mdt"/>
+                                        </constraints>
+                                        <state key="normal" image="back"/>
+                                    </button>
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstItem="s2A-Al-Vql" firstAttribute="centerY" secondItem="sH7-VG-gSG" secondAttribute="centerY" id="M2G-ec-aRe"/>
                                     <constraint firstItem="s2A-Al-Vql" firstAttribute="centerX" secondItem="sH7-VG-gSG" secondAttribute="centerX" id="XXL-OY-kdP"/>
                                     <constraint firstAttribute="height" constant="80" id="Xv7-2v-ko0"/>
+                                    <constraint firstItem="Ofh-SV-ipU" firstAttribute="centerY" secondItem="sH7-VG-gSG" secondAttribute="centerY" id="ghk-3R-CuP"/>
+                                    <constraint firstItem="Ofh-SV-ipU" firstAttribute="leading" secondItem="sH7-VG-gSG" secondAttribute="leading" id="tEG-8i-Vnq"/>
                                 </constraints>
                             </view>
                             <visualEffectView opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="tyl-VQ-20v">
@@ -49,34 +59,60 @@
                                 </view>
                                 <blurEffect style="dark"/>
                             </visualEffectView>
-                            <button opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ofh-SV-ipU" userLabel="Back Button">
-                                <rect key="frame" x="0.0" y="18" width="44" height="44"/>
+                            <view alpha="0.0" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="aSF-r0-xP8" userLabel="Comment Header View">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="80"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Kane's Photo" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CFg-8s-wDM">
+                                        <rect key="frame" x="134" y="30" width="107" height="21"/>
+                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
+                                        <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Exg-Gj-qKX" userLabel="Close Button">
+                                        <rect key="frame" x="0.0" y="18" width="44" height="44"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="44" id="92F-ca-V8Z"/>
+                                            <constraint firstAttribute="height" constant="44" id="Aeb-6b-M64"/>
+                                        </constraints>
+                                        <state key="normal" image="back"/>
+                                        <connections>
+                                            <action selector="didTapCloseButton:" destination="BYZ-38-t0r" eventType="touchUpInside" id="g2b-Oh-vbW"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="44" id="2r5-B0-jJy"/>
-                                    <constraint firstAttribute="height" constant="44" id="ebQ-mO-mdt"/>
+                                    <constraint firstItem="CFg-8s-wDM" firstAttribute="centerY" secondItem="aSF-r0-xP8" secondAttribute="centerY" id="1DZ-1T-u0t"/>
+                                    <constraint firstAttribute="height" constant="80" id="57t-5E-rnL"/>
+                                    <constraint firstItem="CFg-8s-wDM" firstAttribute="centerX" secondItem="aSF-r0-xP8" secondAttribute="centerX" id="I89-O2-TeI"/>
+                                    <constraint firstItem="Exg-Gj-qKX" firstAttribute="centerY" secondItem="aSF-r0-xP8" secondAttribute="centerY" id="aQH-HA-byq"/>
+                                    <constraint firstItem="Exg-Gj-qKX" firstAttribute="leading" secondItem="aSF-r0-xP8" secondAttribute="leading" id="jG7-T3-vim"/>
                                 </constraints>
-                                <state key="normal" image="back"/>
-                            </button>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstItem="Ofh-SV-ipU" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="2Dh-ZV-fHB"/>
                             <constraint firstItem="tyl-VQ-20v" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="5n4-Mp-HpW"/>
                             <constraint firstItem="cXJ-vQ-h33" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="6iL-6n-LZy"/>
+                            <constraint firstAttribute="trailing" secondItem="aSF-r0-xP8" secondAttribute="trailing" id="IWJ-3m-sRp"/>
+                            <constraint firstItem="aSF-r0-xP8" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="MiT-q1-F2j"/>
                             <constraint firstAttribute="trailing" secondItem="tyl-VQ-20v" secondAttribute="trailing" id="PHg-Ul-dYl"/>
                             <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="cXJ-vQ-h33" secondAttribute="bottom" id="Qct-xz-ptD"/>
                             <constraint firstAttribute="trailing" secondItem="sH7-VG-gSG" secondAttribute="trailing" id="Rs3-tr-Nf6"/>
-                            <constraint firstItem="Ofh-SV-ipU" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" constant="18" id="X55-cX-E42"/>
                             <constraint firstItem="sH7-VG-gSG" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="ZPN-wk-Fga"/>
                             <constraint firstAttribute="trailing" secondItem="cXJ-vQ-h33" secondAttribute="trailing" id="dHG-4G-6XP"/>
                             <constraint firstItem="sH7-VG-gSG" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="fUI-Cb-geQ"/>
                             <constraint firstItem="tyl-VQ-20v" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="nDw-NM-AgV"/>
+                            <constraint firstItem="aSF-r0-xP8" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="pLf-CO-xYu"/>
                             <constraint firstItem="cXJ-vQ-h33" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="qY0-xq-GnW"/>
                             <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="tyl-VQ-20v" secondAttribute="bottom" id="yI3-4w-Szy"/>
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="backButton" destination="Ofh-SV-ipU" id="uRm-cL-33M"/>
                         <outlet property="blurEffectView" destination="tyl-VQ-20v" id="NJI-NA-tAo"/>
+                        <outlet property="closeButton" destination="Exg-Gj-qKX" id="dZm-xD-2Cu"/>
+                        <outlet property="commentHeaderView" destination="aSF-r0-xP8" id="xWP-F2-gDa"/>
                         <outlet property="headerView" destination="sH7-VG-gSG" id="4q5-eu-jjb"/>
                     </connections>
                 </viewController>
