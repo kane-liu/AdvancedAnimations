@@ -17,8 +17,10 @@ class ViewController: UIViewController {
     
     // Constant
     let commentViewHeight: CGFloat = 64.0
+    let animatorDuration: TimeInterval = 1
     
     // UI
+    @IBOutlet weak var blurEffectView: UIVisualEffectView!
     var commentView = UIView()
     var commentTitleLabel = UILabel()
     var commentDummyView = UIImageView()
@@ -40,6 +42,8 @@ class ViewController: UIViewController {
     }
 
     private func initSubViews() {
+        self.blurEffectView.effect = nil
+        
         // Collapsed comment view
         commentView.frame = self.collapsedFrame()
         commentView.backgroundColor = .white
@@ -100,13 +104,13 @@ class ViewController: UIViewController {
     
     // MARK: Gesture
     @objc private func handleTapGesture(_ recognizer: UITapGestureRecognizer) {
-        self.animateOrReverseRunningTransition(state: self.nextState(), duration: 1)
+        self.animateOrReverseRunningTransition(state: self.nextState(), duration: animatorDuration)
     }
     
     @objc private func handlePanGesture(_ recognizer: UIPanGestureRecognizer) {
         switch recognizer.state {
         case .began:
-            self.startInteractiveTransition(state: self.nextState(), duration: 1)
+            self.startInteractiveTransition(state: self.nextState(), duration: animatorDuration)
         case .changed:
             let translation = recognizer.translation(in: commentView)
             self.updateInteractiveTransition(fractionComplete: self.fractionComplete(withTranslation: translation))
@@ -118,29 +122,62 @@ class ViewController: UIViewController {
     }
     
     // MARK: Animation
+    // Frame Animation
+    private func addFrameAnimator(state: State, duration: TimeInterval) {
+        // Frame Animation
+        let frameAnimator = UIViewPropertyAnimator(duration: duration, dampingRatio: 1) {
+            switch state {
+            case .expanded:
+                self.commentView.frame = self.expandedFrame()
+            case .collapsed:
+                self.commentView.frame = self.collapsedFrame()
+            }
+        }
+        frameAnimator.addCompletion({ (position) in
+            switch position {
+            case .start, .end:
+                self.state = self.nextState()
+                self.runningAnimators.removeAll()
+            default:
+                break
+            }
+        })
+        frameAnimator.pauseAnimation()
+        progressWhenInterrupted = frameAnimator.fractionComplete
+        runningAnimators.append(frameAnimator)
+    }
+    
+    // Blur Animation
+    private func addBlurAnimator(state: State, duration: TimeInterval) {
+        var timing: UITimingCurveProvider
+        switch state {
+        case .expanded:
+            timing = UICubicTimingParameters(controlPoint1: CGPoint(x: 0.75, y: 0.1), controlPoint2: CGPoint(x: 0.9, y: 0.25))
+        case .collapsed:
+            timing = UICubicTimingParameters(controlPoint1: CGPoint(x: 0.1, y: 0.75), controlPoint2: CGPoint(x: 0.25, y: 0.9))
+        }
+        // Blur Animation
+        let blurAnimator = UIViewPropertyAnimator(duration: duration, timingParameters: timing)
+        if #available(iOS 11, *) {
+            blurAnimator.scrubsLinearly = false
+        }
+        blurAnimator.addAnimations {
+            switch state {
+            case .expanded:
+                self.blurEffectView.effect = UIBlurEffect(style: .dark)
+            case .collapsed:
+                self.blurEffectView.effect = nil
+            }
+        }
+        blurAnimator.pauseAnimation()
+        runningAnimators.append(blurAnimator)
+    }
+    
     // Perform all animations with animators if not already running
     func animateTransitionIfNeeded(state: State, duration: TimeInterval) {
         if runningAnimators.isEmpty {
-            let frameAnimator = UIViewPropertyAnimator(duration: duration, dampingRatio: 1) {
-                switch state {
-                case .expanded:
-                    self.commentView.frame = self.expandedFrame()
-                case .collapsed:
-                    self.commentView.frame = self.collapsedFrame()
-                }
-            }
-            frameAnimator.addCompletion({ (position) in
-                switch position {
-                case .start, .end:
-                    self.state = self.nextState()
-                    self.runningAnimators.removeAll()
-                default:
-                    break
-                }
-            })
-            frameAnimator.pauseAnimation()
-            progressWhenInterrupted = frameAnimator.fractionComplete
-            runningAnimators.append(frameAnimator)
+            self.addFrameAnimator(state: state, duration: duration)
+            self.addBlurAnimator(state: state, duration: duration)
         }
     }
     
@@ -156,7 +193,7 @@ class ViewController: UIViewController {
     
     // Starts transition if necessary and pauses on pan .began
     func startInteractiveTransition(state: State, duration: TimeInterval) {
-        self.animateTransitionIfNeeded(state: state, duration: 1)
+        self.animateTransitionIfNeeded(state: state, duration: duration)
     }
     
     // Scrubs transition on pan .changed

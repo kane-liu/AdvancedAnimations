@@ -51,18 +51,33 @@
                                     <constraint firstAttribute="height" constant="80" id="Xv7-2v-ko0"/>
                                 </constraints>
                             </view>
+                            <visualEffectView opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="tyl-VQ-20v">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                                <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="k8q-St-25n">
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                </view>
+                                <blurEffect style="dark"/>
+                            </visualEffectView>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
+                            <constraint firstItem="tyl-VQ-20v" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="5n4-Mp-HpW"/>
                             <constraint firstItem="cXJ-vQ-h33" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="6iL-6n-LZy"/>
+                            <constraint firstAttribute="trailing" secondItem="tyl-VQ-20v" secondAttribute="trailing" id="PHg-Ul-dYl"/>
                             <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="cXJ-vQ-h33" secondAttribute="bottom" id="Qct-xz-ptD"/>
                             <constraint firstAttribute="trailing" secondItem="sH7-VG-gSG" secondAttribute="trailing" id="Rs3-tr-Nf6"/>
                             <constraint firstItem="sH7-VG-gSG" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="ZPN-wk-Fga"/>
                             <constraint firstAttribute="trailing" secondItem="cXJ-vQ-h33" secondAttribute="trailing" id="dHG-4G-6XP"/>
                             <constraint firstItem="sH7-VG-gSG" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="fUI-Cb-geQ"/>
+                            <constraint firstItem="tyl-VQ-20v" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="nDw-NM-AgV"/>
                             <constraint firstItem="cXJ-vQ-h33" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="qY0-xq-GnW"/>
+                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="tyl-VQ-20v" secondAttribute="bottom" id="yI3-4w-Szy"/>
                         </constraints>
                     </view>
+                    <connections>
+                        <outlet property="blurEffectView" destination="tyl-VQ-20v" id="NJI-NA-tAo"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
