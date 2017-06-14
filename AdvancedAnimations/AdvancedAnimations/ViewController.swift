@@ -173,11 +173,27 @@ class ViewController: UIViewController {
         runningAnimators.append(blurAnimator)
     }
     
+    // Label Scale Animation
+    private func addLabelScaleAnimator(state: State, duration: TimeInterval) {
+        // Label Scale Animation
+        let scaleAnimator = UIViewPropertyAnimator(duration: duration, dampingRatio: 1) {
+            switch state {
+            case .expanded:
+                self.commentTitleLabel.transform = CGAffineTransform.identity.scaledBy(x: 1.8, y: 1.8)
+            case .collapsed:
+                self.commentTitleLabel.transform = CGAffineTransform.identity
+            }
+        }
+        scaleAnimator.pauseAnimation()
+        runningAnimators.append(scaleAnimator)
+    }
+    
     // Perform all animations with animators if not already running
     func animateTransitionIfNeeded(state: State, duration: TimeInterval) {
         if runningAnimators.isEmpty {
             self.addFrameAnimator(state: state, duration: duration)
             self.addBlurAnimator(state: state, duration: duration)
+            self.addLabelScaleAnimator(state: state, duration: duration)
         }
     }
     
