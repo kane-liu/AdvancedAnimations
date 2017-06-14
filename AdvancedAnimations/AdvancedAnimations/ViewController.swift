@@ -149,12 +149,20 @@ class ViewController: UIViewController {
         }
         frameAnimator.addCompletion({ (position) in
             switch position {
-            case .start, .end:
+            case .start:
+                // Fix blur animator bug don't know why
+                switch self.state {
+                case .expanded:
+                    self.blurEffectView.effect = UIBlurEffect(style: .dark)
+                case .collapsed:
+                    self.blurEffectView.effect = nil
+                }
+            case .end:
                 self.state = self.nextState()
-                self.runningAnimators.removeAll()
             default:
                 break
             }
+            self.runningAnimators.removeAll()
         })
         frameAnimator.pauseAnimation()
         progressWhenInterrupted = frameAnimator.fractionComplete
