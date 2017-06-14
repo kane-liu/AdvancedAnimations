@@ -2,7 +2,7 @@
 //  AppDelegate.swift
 //  AdvancedAnimations
 //
-//  Created by 劉 柯 on 2017/06/14.
+//  Created by kane-liu on 2017/06/14.
 //  Copyright © 2017年 Ryu Ka. All rights reserved.
 //
 
