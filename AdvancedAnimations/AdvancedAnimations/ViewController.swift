@@ -124,7 +124,8 @@ class ViewController: UIViewController {
             let translation = recognizer.translation(in: commentView)
             self.updateInteractiveTransition(fractionComplete: self.fractionComplete(withTranslation: translation))
         case .ended:
-            self.continueInteractiveTransition(cancel: false)
+            let translation = recognizer.translation(in: commentView)
+            self.continueInteractiveTransition(fractionComplete: self.fractionComplete(withTranslation: translation))
         default:
             break
         }
@@ -285,8 +286,18 @@ class ViewController: UIViewController {
     }
     
     // Continues or reverse transition on pan .ended
-    func continueInteractiveTransition(cancel: Bool) {
+    func continueInteractiveTransition(fractionComplete: CGFloat) {
+        let cancel: Bool = fractionComplete < 0.25
+        
         if !runningAnimators.isEmpty {
+            if cancel {
+                runningAnimators.forEach({
+                    $0.isReversed = !$0.isReversed
+                    $0.continueAnimation(withTimingParameters: nil, durationFactor: 0)
+                })
+                return
+            }
+            
             let timing = UICubicTimingParameters(animationCurve: .easeOut)
             runningAnimators.forEach({ $0.continueAnimation(withTimingParameters: timing, durationFactor: 0) })
         }
