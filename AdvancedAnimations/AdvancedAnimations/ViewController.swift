@@ -20,6 +20,7 @@ class ViewController: UIViewController {
     let animatorDuration: TimeInterval = 1
     
     // UI
+    @IBOutlet weak var headerView: UIView!
     @IBOutlet weak var blurEffectView: UIVisualEffectView!
     var commentView = UIView()
     var commentTitleLabel = UILabel()
@@ -61,10 +62,10 @@ class ViewController: UIViewController {
             x: 0.0,
             y: commentViewHeight,
             width: self.view.frame.width,
-            height: self.view.frame.height - commentViewHeight
+            height: self.view.frame.height - commentViewHeight - self.headerView.frame.height
         )
         commentDummyView.image = UIImage(named: "comments")
-        commentDummyView.contentMode = .scaleAspectFill
+        commentDummyView.contentMode = .scaleAspectFit
         commentView.addSubview(commentDummyView)
     }
     
@@ -78,7 +79,12 @@ class ViewController: UIViewController {
     
     // MARK: Util
     private func expandedFrame() -> CGRect {
-        return self.view.frame
+        return CGRect(
+            x: 0,
+            y: self.headerView.frame.height,
+            width: self.view.frame.width,
+            height: self.view.frame.height - self.headerView.frame.height
+        )
     }
     
     private func collapsedFrame() -> CGRect {
@@ -90,7 +96,7 @@ class ViewController: UIViewController {
     }
     
     private func fractionComplete(withTranslation translation: CGPoint) -> CGFloat {
-        return fabs(translation.y) / (self.view.frame.height - commentViewHeight) + progressWhenInterrupted
+        return fabs(translation.y) / (self.view.frame.height - commentViewHeight - self.headerView.frame.height) + progressWhenInterrupted
     }
     
     private func nextState() -> State {
@@ -156,7 +162,6 @@ class ViewController: UIViewController {
         case .collapsed:
             timing = UICubicTimingParameters(controlPoint1: CGPoint(x: 0.1, y: 0.75), controlPoint2: CGPoint(x: 0.25, y: 0.9))
         }
-        // Blur Animation
         let blurAnimator = UIViewPropertyAnimator(duration: duration, timingParameters: timing)
         if #available(iOS 11, *) {
             blurAnimator.scrubsLinearly = false
@@ -175,7 +180,6 @@ class ViewController: UIViewController {
     
     // Label Scale Animation
     private func addLabelScaleAnimator(state: State, duration: TimeInterval) {
-        // Label Scale Animation
         let scaleAnimator = UIViewPropertyAnimator(duration: duration, dampingRatio: 1) {
             switch state {
             case .expanded:
@@ -188,12 +192,32 @@ class ViewController: UIViewController {
         runningAnimators.append(scaleAnimator)
     }
     
+    // CornerRadius Animation
+    private func addCornerRadiusAnimtior(state: State, duration: TimeInterval) {
+        commentView.clipsToBounds = true
+        // Corner mask
+        if #available(iOS 11, *) {
+            commentView.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
+        }
+        let cornerRadiusAnimator = UIViewPropertyAnimator(duration: duration, dampingRatio: 1) {
+            switch state {
+            case .expanded:
+                self.commentView.layer.cornerRadius = 12
+            case .collapsed:
+                self.commentView.layer.cornerRadius = 0
+            }
+        }
+        cornerRadiusAnimator.pauseAnimation()
+        runningAnimators.append(cornerRadiusAnimator)
+    }
+    
     // Perform all animations with animators if not already running
     func animateTransitionIfNeeded(state: State, duration: TimeInterval) {
         if runningAnimators.isEmpty {
             self.addFrameAnimator(state: state, duration: duration)
             self.addBlurAnimator(state: state, duration: duration)
             self.addLabelScaleAnimator(state: state, duration: duration)
+            self.addCornerRadiusAnimtior(state: state, duration: duration)
         }
     }
     

@@ -33,19 +33,9 @@
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <button opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ofh-SV-ipU" userLabel="Back Button">
-                                        <rect key="frame" x="0.0" y="18" width="44" height="44"/>
-                                        <constraints>
-                                            <constraint firstAttribute="width" constant="44" id="2r5-B0-jJy"/>
-                                            <constraint firstAttribute="height" constant="44" id="ebQ-mO-mdt"/>
-                                        </constraints>
-                                        <state key="normal" image="back"/>
-                                    </button>
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
-                                    <constraint firstItem="Ofh-SV-ipU" firstAttribute="leading" secondItem="sH7-VG-gSG" secondAttribute="leading" id="1Vd-XB-cWO"/>
-                                    <constraint firstItem="Ofh-SV-ipU" firstAttribute="centerY" secondItem="sH7-VG-gSG" secondAttribute="centerY" id="DTx-ha-49e"/>
                                     <constraint firstItem="s2A-Al-Vql" firstAttribute="centerY" secondItem="sH7-VG-gSG" secondAttribute="centerY" id="M2G-ec-aRe"/>
                                     <constraint firstItem="s2A-Al-Vql" firstAttribute="centerX" secondItem="sH7-VG-gSG" secondAttribute="centerX" id="XXL-OY-kdP"/>
                                     <constraint firstAttribute="height" constant="80" id="Xv7-2v-ko0"/>
@@ -59,14 +49,24 @@
                                 </view>
                                 <blurEffect style="dark"/>
                             </visualEffectView>
+                            <button opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ofh-SV-ipU" userLabel="Back Button">
+                                <rect key="frame" x="0.0" y="18" width="44" height="44"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="44" id="2r5-B0-jJy"/>
+                                    <constraint firstAttribute="height" constant="44" id="ebQ-mO-mdt"/>
+                                </constraints>
+                                <state key="normal" image="back"/>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
+                            <constraint firstItem="Ofh-SV-ipU" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="2Dh-ZV-fHB"/>
                             <constraint firstItem="tyl-VQ-20v" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="5n4-Mp-HpW"/>
                             <constraint firstItem="cXJ-vQ-h33" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="6iL-6n-LZy"/>
                             <constraint firstAttribute="trailing" secondItem="tyl-VQ-20v" secondAttribute="trailing" id="PHg-Ul-dYl"/>
                             <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="cXJ-vQ-h33" secondAttribute="bottom" id="Qct-xz-ptD"/>
                             <constraint firstAttribute="trailing" secondItem="sH7-VG-gSG" secondAttribute="trailing" id="Rs3-tr-Nf6"/>
+                            <constraint firstItem="Ofh-SV-ipU" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" constant="18" id="X55-cX-E42"/>
                             <constraint firstItem="sH7-VG-gSG" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="ZPN-wk-Fga"/>
                             <constraint firstAttribute="trailing" secondItem="cXJ-vQ-h33" secondAttribute="trailing" id="dHG-4G-6XP"/>
                             <constraint firstItem="sH7-VG-gSG" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="fUI-Cb-geQ"/>
@@ -77,6 +77,7 @@
                     </view>
                     <connections>
                         <outlet property="blurEffectView" destination="tyl-VQ-20v" id="NJI-NA-tAo"/>
+                        <outlet property="headerView" destination="sH7-VG-gSG" id="4q5-eu-jjb"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
