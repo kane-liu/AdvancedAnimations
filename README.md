@@ -12,7 +12,6 @@ A demo references to WWDC2017 ["Advanced Animations with UIKit"](https://develop
 - [x] Tap & pan gesture
 
 - Issues
-- [ ] Tap gesture not works well for iOS10
 - [ ] UIViewPropertyAnimator only supported from iOS10
 - [ ] Some features only work on iOS11 like corner radius "maskedCorners"
 - [ ] When animators are interruted blur effect not works well
