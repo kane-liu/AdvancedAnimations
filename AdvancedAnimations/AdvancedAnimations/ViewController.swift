@@ -165,7 +165,6 @@ class ViewController: UIViewController {
             }
             self.runningAnimators.removeAll()
         })
-        frameAnimator.pauseAnimation()
         progressWhenInterrupted = frameAnimator.fractionComplete
         runningAnimators.append(frameAnimator)
     }
@@ -191,7 +190,6 @@ class ViewController: UIViewController {
                 self.blurEffectView.effect = nil
             }
         }
-        blurAnimator.pauseAnimation()
         runningAnimators.append(blurAnimator)
     }
     
@@ -205,7 +203,6 @@ class ViewController: UIViewController {
                 self.commentTitleLabel.transform = CGAffineTransform.identity
             }
         }
-        scaleAnimator.pauseAnimation()
         runningAnimators.append(scaleAnimator)
     }
     
@@ -224,7 +221,6 @@ class ViewController: UIViewController {
                 self.commentView.layer.cornerRadius = 0
             }
         }
-        cornerRadiusAnimator.pauseAnimation()
         runningAnimators.append(cornerRadiusAnimator)
     }
     
@@ -248,7 +244,6 @@ class ViewController: UIViewController {
                 }
             }, completion: nil)
         }
-        keyFrameAnimator.pauseAnimation()
         runningAnimators.append(keyFrameAnimator)
     }
     
@@ -276,31 +271,29 @@ class ViewController: UIViewController {
     // Starts transition if necessary and pauses on pan .began
     func startInteractiveTransition(state: State, duration: TimeInterval) {
         self.animateTransitionIfNeeded(state: state, duration: duration)
+        // For iOS10 need to pause here
+        runningAnimators.forEach({ $0.pauseAnimation() })
     }
     
     // Scrubs transition on pan .changed
     func updateInteractiveTransition(fractionComplete: CGFloat) {
-        if !runningAnimators.isEmpty {
-            runningAnimators.forEach({ $0.fractionComplete = fractionComplete })
-        }
+        runningAnimators.forEach({ $0.fractionComplete = fractionComplete })
     }
     
     // Continues or reverse transition on pan .ended
     func continueInteractiveTransition(fractionComplete: CGFloat) {
         let cancel: Bool = fractionComplete < 0.25
         
-        if !runningAnimators.isEmpty {
-            if cancel {
-                runningAnimators.forEach({
-                    $0.isReversed = !$0.isReversed
-                    $0.continueAnimation(withTimingParameters: nil, durationFactor: 0)
-                })
-                return
-            }
-            
-            let timing = UICubicTimingParameters(animationCurve: .easeOut)
-            runningAnimators.forEach({ $0.continueAnimation(withTimingParameters: timing, durationFactor: 0) })
+        if cancel {
+            runningAnimators.forEach({
+                $0.isReversed = !$0.isReversed
+                $0.continueAnimation(withTimingParameters: nil, durationFactor: 0)
+            })
+            return
         }
+        
+        let timing = UICubicTimingParameters(animationCurve: .easeOut)
+        runningAnimators.forEach({ $0.continueAnimation(withTimingParameters: timing, durationFactor: 0) })
     }
 }
 
