@@ -117,14 +117,14 @@ class ViewController: UIViewController {
     }
     
     @objc private func handlePanGesture(_ recognizer: UIPanGestureRecognizer) {
+        let translation = recognizer.translation(in: commentView)
+        
         switch recognizer.state {
         case .began:
             self.startInteractiveTransition(state: self.nextState(), duration: animatorDuration)
         case .changed:
-            let translation = recognizer.translation(in: commentView)
             self.updateInteractiveTransition(fractionComplete: self.fractionComplete(withTranslation: translation))
         case .ended:
-            let translation = recognizer.translation(in: commentView)
             self.continueInteractiveTransition(fractionComplete: self.fractionComplete(withTranslation: translation))
         default:
             break
