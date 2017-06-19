@@ -98,8 +98,9 @@ class ViewController: UIViewController {
             height: commentViewHeight)
     }
     
-    private func fractionComplete(withTranslation translation: CGPoint) -> CGFloat {
-        return fabs(translation.y) / (self.view.frame.height - commentViewHeight - self.headerView.frame.height) + progressWhenInterrupted
+    private func fractionComplete(state: State, translation: CGPoint) -> CGFloat {
+        let translationY = state == .expanded ? -translation.y : translation.y
+        return translationY / (self.view.frame.height - commentViewHeight - self.headerView.frame.height) + progressWhenInterrupted
     }
     
     private func nextState() -> State {
@@ -123,9 +124,9 @@ class ViewController: UIViewController {
         case .began:
             self.startInteractiveTransition(state: self.nextState(), duration: animatorDuration)
         case .changed:
-            self.updateInteractiveTransition(fractionComplete: self.fractionComplete(withTranslation: translation))
+            self.updateInteractiveTransition(fractionComplete: self.fractionComplete(state: self.nextState(), translation: translation))
         case .ended:
-            self.continueInteractiveTransition(fractionComplete: self.fractionComplete(withTranslation: translation))
+            self.continueInteractiveTransition(fractionComplete: self.fractionComplete(state: self.nextState(), translation: translation))
         default:
             break
         }
@@ -165,7 +166,6 @@ class ViewController: UIViewController {
             }
             self.runningAnimators.removeAll()
         })
-        progressWhenInterrupted = frameAnimator.fractionComplete
         runningAnimators.append(frameAnimator)
     }
     
@@ -271,8 +271,8 @@ class ViewController: UIViewController {
     // Starts transition if necessary and pauses on pan .began
     func startInteractiveTransition(state: State, duration: TimeInterval) {
         self.animateTransitionIfNeeded(state: state, duration: duration)
-        // For iOS10 need to pause here
         runningAnimators.forEach({ $0.pauseAnimation() })
+        progressWhenInterrupted = runningAnimators.first?.fractionComplete ?? 0
     }
     
     // Scrubs transition on pan .changed
@@ -282,7 +282,7 @@ class ViewController: UIViewController {
     
     // Continues or reverse transition on pan .ended
     func continueInteractiveTransition(fractionComplete: CGFloat) {
-        let cancel: Bool = fractionComplete < 0.25
+        let cancel: Bool = fractionComplete < 0.1
         
         if cancel {
             runningAnimators.forEach({
