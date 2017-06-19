@@ -282,7 +282,7 @@ class ViewController: UIViewController {
     
     // Continues or reverse transition on pan .ended
     func continueInteractiveTransition(fractionComplete: CGFloat) {
-        let cancel: Bool = fractionComplete < 0.1
+        let cancel: Bool = fractionComplete < 0.2
         
         if cancel {
             runningAnimators.forEach({
